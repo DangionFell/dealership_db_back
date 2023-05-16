@@ -33,6 +33,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
 
+    implementation("com.zaxxer:HikariCP:4.0.3")
     implementation ("org.postgresql:postgresql:42.3.1")
 
     implementation("ch.qos.logback:logback-classic:$logback_version")
