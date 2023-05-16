@@ -8,6 +8,7 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.cio.*
 import com.DBshowroom.plugins.*
+import io.ktor.server.netty.*
 import org.jetbrains.exposed.sql.Database
 
 fun main() {
@@ -15,7 +16,7 @@ fun main() {
         driver = "org.postgresql.Driver",
         user = "postgres",
         password = "123456")
-    embeddedServer(CIO, port = 8080, host = "192.168.56.1", module = Application::module)
+    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
 
