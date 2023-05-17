@@ -2,8 +2,6 @@ package com.DBshowroom.features.routing
 
 import com.DBshowroom.database.client.Client
 import com.DBshowroom.database.client.*
-import com.DBshowroom.database.showroom.Showroom
-import com.DBshowroom.database.showroom.ShowroomReceiveRemote
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -35,7 +33,7 @@ fun Application.configureClientRouting() {
             if (request == null) {
                 call.respond(HttpStatusCode.BadRequest, "Invalid request")
             } else {
-                if(Client.findByPhoneAndPassword(request.phone, request.password) == null){
+                if(Client.findByPhoneAndPassword(ClientLoginReceiveRemote(request.phone, request.password)) == null){
                     val clientId = Client.create(request)
                     call.respond(clientId)
                 } else {
@@ -49,7 +47,7 @@ fun Application.configureClientRouting() {
             if (request == null) {
                 call.respond(HttpStatusCode.BadRequest, "Invalid request")
             } else {
-                val client = Client.findByPhoneAndPassword(request.phone, request.password)
+                val client = Client.findByPhoneAndPassword(request)
                 if(client != null){
                     call.respond(client)
                 } else {
@@ -57,6 +55,5 @@ fun Application.configureClientRouting() {
                 }
             }
         }
-
     }
 }

@@ -31,8 +31,10 @@ fun Application.configureShowroomRouting() {
             if (request == null) {
                 call.respond(HttpStatusCode.BadRequest, "Invalid request")
             } else {
-                val showroomId = Showroom.create(request)
-                call.respond(HttpStatusCode.Created, "Showroom created with id: $showroomId")
+                if (Showroom.getShowroomByAddress(request.address) == null) {
+                    val showroomId = Showroom.create(request)
+                    call.respond(HttpStatusCode.Created, "Showroom created with id: $showroomId")
+                }
             }
         }
     }

@@ -12,12 +12,12 @@ object Showroom: Table("car_showroom") {
 
     override val primaryKey = PrimaryKey(id)
 
-    fun create(showroomDTO: ShowroomReceiveRemote): Int{
+    fun create(showroom: ShowroomReceiveRemote): Int{
         return transaction {
             Showroom.insert {
-                it[name] = showroomDTO.name
-                it[address] = showroomDTO.address
-                it[phone] = showroomDTO.phone
+                it[name] = showroom.name
+                it[address] = showroom.address
+                it[phone] = showroom.phone
             } get Showroom.id
         }
     }
@@ -30,6 +30,14 @@ object Showroom: Table("car_showroom") {
         }
     }
 
+    fun getShowroomByAddress(address: String): ShowroomDTO? {
+        return transaction {
+            Showroom.select { Showroom.address eq address }
+                .mapNotNull { toShowroomDTO(it) }
+                .singleOrNull()
+        }
+    }
+
     fun readAll(): List<ShowroomDTO> {
         return transaction {
             Showroom.selectAll()
@@ -37,9 +45,9 @@ object Showroom: Table("car_showroom") {
         }
     }
 
-    fun update(id: Int, showroomDTO: ShowroomReceiveRemote): Boolean {
+    fun update(showroomDTO: ShowroomDTO): Boolean {
         return transaction {
-            Showroom.update({ Showroom.id eq id }) {
+            Showroom.update({ Showroom.id eq showroomDTO.id }) {
                 it[Showroom.name] = showroomDTO.name
                 it[Showroom.address] = showroomDTO.address
                 it[Showroom.phone] = showroomDTO.phone

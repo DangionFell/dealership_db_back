@@ -1,12 +1,8 @@
 package com.DBshowroom
 
-import com.DBshowroom.features.login.configureLoginRouting
-import com.DBshowroom.features.register.configureRegisterRouting
-import com.DBshowroom.features.routing.configureClientRouting
-import com.DBshowroom.features.routing.configureShowroomRouting
+import com.DBshowroom.features.routing.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
-import io.ktor.server.cio.*
 import com.DBshowroom.plugins.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -30,9 +26,11 @@ fun main() {
 fun Application.module() {
     configureSerialization()
     configureRouting()
-    configureLoginRouting()
-    configureRegisterRouting()
+
 
     configureShowroomRouting()
     configureClientRouting()
+    configureManagerRouting()
+    configureCarRouting()
+    configureContractRouting()
 }

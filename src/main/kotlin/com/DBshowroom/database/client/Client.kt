@@ -1,7 +1,5 @@
 package com.DBshowroom.database.client
 
-import com.DBshowroom.database.client.Client.update
-import com.DBshowroom.database.showroom.Showroom.autoIncrement
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -32,9 +30,9 @@ object Client: Table("client") {
         }
     }
 
-    fun findByPhoneAndPassword(phone: String, password: String): ClientDTO?{
+    fun findByPhoneAndPassword(client: ClientLoginReceiveRemote): ClientDTO?{
         return transaction {
-            Client.select { (Client.phone eq phone) and (Client.password eq password) }
+            Client.select { (Client.phone eq client.phone) and (Client.password eq client.password) }
                 .mapNotNull { toClientDTO(it) }
                 .singleOrNull()
         }
@@ -47,12 +45,12 @@ object Client: Table("client") {
         }
     }
 
-    fun update(id: Int, name: String, phone: String, password: String): Boolean {
+    fun update(client: ClientDTO): Boolean {
         return transaction {
-            Client.update({ Client.id eq id }) {
-                it[Client.name] = name
-                it[Client.phone] = phone
-                it[Client.password] = password
+            Client.update({ Client.id eq client.id }) {
+                it[Client.name] = client.name
+                it[Client.phone] = client.phone
+                it[Client.password] = client.password
             } > 0
         }
     }
