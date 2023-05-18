@@ -42,6 +42,20 @@ fun Application.configureCarRouting() {
             }
         }
 
+        get("/showroom/{id}/cars/in_stock"){
+            val id = call.parameters["id"]?.toIntOrNull()
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "Invalid id")
+            } else {
+                val cars = Car.getCarsInStockByShowroomId(id)
+                if (cars != null) {
+                    call.respond(cars)
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Showroom not found or empty")
+                }
+            }
+        }
+
         post("/car"){
             val request = call.receive<CarReceiveRemote>()
             if (request == null) {

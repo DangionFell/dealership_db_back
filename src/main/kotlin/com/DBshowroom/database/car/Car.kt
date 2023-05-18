@@ -77,6 +77,14 @@ object Car: Table("car") {
         }
     }
 
+    fun getCarsInStockByShowroomId(showroomId: Int): List<CarDTO> {
+        return transaction {
+            Car.select { (Car.showroomId eq showroomId) and (Car.state eq "в наличии") }
+                .mapNotNull { toCarDTO(it) }
+        }
+    }
+
+
     private fun toCarDTO(row: ResultRow): CarDTO {
         return CarDTO(
             id = row[Car.id],
