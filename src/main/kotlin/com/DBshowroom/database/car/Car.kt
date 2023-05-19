@@ -1,5 +1,8 @@
 package com.DBshowroom.database.car
 
+import com.DBshowroom.database.client.Client
+import com.DBshowroom.database.contract.Contract
+import com.DBshowroom.database.manager.Manager
 import com.DBshowroom.database.showroom.Showroom
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -84,6 +87,22 @@ object Car: Table("car") {
         }
     }
 
+    fun getCarsByClientPhone(phone: String): List<CarDTO> {
+        return transaction {
+            (Contract innerJoin Car).join(Client, JoinType.INNER, additionalConstraint = { Contract.clientId eq Client.id })
+                .select { Client.phone eq phone }
+                .mapNotNull { toCarDTO(it) }
+        }
+    }
+
+    fun getCarsByManagerPhone(phone: String): List<CarDTO> {
+        return transaction {
+            (Contract innerJoin Car).join(Manager, JoinType.INNER, additionalConstraint = { Contract.managerId eq Manager.id })
+                .select { Manager.phone eq phone }
+                .mapNotNull { toCarDTO(it) }
+        }
+    }
+
 
     private fun toCarDTO(row: ResultRow): CarDTO {
         return CarDTO(
@@ -98,4 +117,5 @@ object Car: Table("car") {
             showroomId = row[Car.showroomId]
         )
     }
+
 }

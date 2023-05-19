@@ -28,6 +28,34 @@ fun Application.configureCarRouting() {
             }
         }
 
+        get("car/client/{phone}") {
+            val phone = call.parameters["phone"]
+            if (phone == null) {
+                call.respond(HttpStatusCode.BadRequest, "Invalid phone")
+            } else {
+                val cars = Car.getCarsByClientPhone(phone)
+                if (cars != null) {
+                    call.respond(cars)
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Cars not found")
+                }
+            }
+        }
+
+        get("car/manager/{phone}") {
+            val phone = call.parameters["phone"]
+            if (phone == null) {
+                call.respond(HttpStatusCode.BadRequest, "Invalid phone")
+            } else {
+                val cars = Car.getCarsByManagerPhone(phone)
+                if (cars != null) {
+                    call.respond(cars)
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Cars not found")
+                }
+            }
+        }
+
         get("/showroom/{id}/cars"){
             val id = call.parameters["id"]?.toIntOrNull()
             if (id == null) {
