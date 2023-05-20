@@ -34,7 +34,7 @@ fun Application.configureContractRouting() {
                 call.respond(HttpStatusCode.BadRequest, "Invalid request")
             } else {
                 val contractId = Contract.create(request)
-                call.respond(HttpStatusCode.Created, "Contract created with id: $contractId")
+                call.respond(contractId)
             }
         }
     }
