@@ -21,17 +21,13 @@ object Contract: Table("contract") {
 
     fun create(contract: ContractReceiveRemote): Int {
         return transaction {
-            Car.update({ Car.id eq carId }) {
-                it[Car.state] = "продано"
-            }
-
             Contract.insert {
                 it[date] = contract.date
                 it[showroomId] = contract.showroomId
                 it[carId] = contract.carId
                 it[clientId] = contract.clientId
                 it[managerId] = contract.managerId
-            } get Car.id
+            } get Contract.id
         }
     }
 

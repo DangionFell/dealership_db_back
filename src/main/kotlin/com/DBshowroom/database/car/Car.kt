@@ -103,6 +103,13 @@ object Car: Table("car") {
         }
     }
 
+    fun updateState(id: Int){
+        transaction {
+            Car.update({ Car.id eq id }) {
+                it[Car.state] = "продано"
+            }
+        }
+    }
 
     private fun toCarDTO(row: ResultRow): CarDTO {
         return CarDTO(

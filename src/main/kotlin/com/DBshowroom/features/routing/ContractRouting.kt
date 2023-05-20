@@ -1,5 +1,6 @@
 package com.DBshowroom.features.routing
 
+import com.DBshowroom.database.car.Car
 import com.DBshowroom.database.contract.Contract
 import com.DBshowroom.database.contract.ContractReceiveRemote
 import io.ktor.http.*
@@ -34,6 +35,7 @@ fun Application.configureContractRouting() {
                 call.respond(HttpStatusCode.BadRequest, "Invalid request")
             } else {
                 val contractId = Contract.create(request)
+                Car.updateState(request.carId)
                 call.respond(contractId)
             }
         }
