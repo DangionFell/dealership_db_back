@@ -28,6 +28,20 @@ fun Application.configureClientRouting() {
             }
         }
 
+        get("/client/phone/{phone}") {
+            val phone = call.parameters["phone"]
+            if (phone == null) {
+                call.respond(HttpStatusCode.BadRequest, "Invalid phone")
+            } else {
+                val client_id = Client.getIdByPhone(phone)
+                if (client_id != null) {
+                    call.respond(client_id)
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Client not found")
+                }
+            }
+        }
+
         post("/client/register"){
             val request = call.receive<ClientRegisterReceiveRemote>()
             if (request == null) {

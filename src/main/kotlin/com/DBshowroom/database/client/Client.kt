@@ -38,6 +38,13 @@ object Client: Table("client") {
         }
     }
 
+    fun getIdByPhone(phone: String): Int?{
+        return transaction {
+            Client.select { Client.phone eq phone }
+                .singleOrNull()?.get(Client.id)
+        }
+    }
+
     fun readAll(): List<ClientDTO> {
         return transaction {
             Client.selectAll()
