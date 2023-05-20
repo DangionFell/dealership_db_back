@@ -90,7 +90,7 @@ fun Application.configureCarRouting() {
                 call.respond(HttpStatusCode.BadRequest, "Invalid request")
             } else {
                 val carId = Car.create(request)
-                call.respond(HttpStatusCode.Created, "Car created with id: $carId")
+                call.respond(carId)
             }
         }
     }
